@@ -13,11 +13,11 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '*******************************************************************************
 ' Classe: cApiClient
-' PropÛsito: Encapsular toda comunicaÁ„o com a API REST
+' Prop√©sito: Encapsular toda comunica√ß√£o com a API REST
 ' Princ√≠pios SOLID aplicados:
-'   - Single Responsibility: Apenas gerencia comunicaÁ„o HTTP/API
-'   - Open/Closed: Extens√≠vel via mÈtodos, fechado para modificaÁ„o
-'   - Dependency Inversion: Usa interfaces (XMLHTTP) ao invÈs de implementaÁ√µes
+'   - Single Responsibility: Apenas gerencia comunica√ß√£o HTTP/API
+'   - Open/Closed: Extens√≠vel via m√©todos, fechado para modifica√ß√£o
+'   - Dependency Inversion: Usa interfaces (XMLHTTP) ao inv√©s de implementa√©√µes
 '*******************************************************************************
 
 Option Explicit
@@ -27,7 +27,7 @@ Private Const BASE_URL As String = "https://nsgyn.com.br/api/"
 Private Const CONTENT_TYPE_JSON As String = "application/json"
 Private Const HEADER_ACCEPT As String = "application/json"
 
-' Vari·veis privadas de inst√¢ncia
+' Vari√©veis privadas de inst√¢ncia
 Private m_Token As String
 Private m_BaseUrl As String
 Private m_LastError As String
@@ -71,7 +71,7 @@ Public Property Get LastStatusCode() As Long
 End Property
 
 '*******************************************************************************
-' MÈtodos P√∫blicos - AutenticaÁ„o
+' M√©todos P√∫blicos - Autentica√ß√£o
 '*******************************************************************************
 
 Public Function Login(ByVal email As String, ByVal password As String) As Boolean
@@ -85,11 +85,11 @@ Public Function Login(ByVal email As String, ByVal password As String) As Boolea
     m_LastError = ""
     m_LastStatusCode = 0
     
-    ' Prepara requisiÁ„o
+    ' Prepara requisi√ß√£o
     Set oHttp = CreateObject("MSXML2.ServerXMLHTTP")
     jsonBody = BuildJsonLogin(email, password)
     
-    ' Executa requisiÁ„o
+    ' Executa requisi√ß√£o
     oHttp.Open "POST", Me.BaseUrl & "login", False
     ConfigureJsonHeaders oHttp, False
     oHttp.send jsonBody
@@ -115,7 +115,7 @@ ErrorHandler:
 End Function
 
 '*******************************************************************************
-' MÈtodos P√∫blicos - Lojas
+' M√©todos P√∫blicos - Lojas
 '*******************************************************************************
 
 Public Function GetLojas() As Collection
@@ -126,9 +126,9 @@ Public Function GetLojas() As Collection
     Dim loja As Object
     Dim colLojas As New Collection
     
-    ' ValidaÁ„o
+    ' Valida√ß√£o
     If Not IsAuthenticated() Then
-        m_LastError = "Usu·rio n„o autenticado"
+        m_LastError = "Usu√©rio n√©o autenticado"
         Set GetLojas = Nothing
         Exit Function
     End If
@@ -137,7 +137,7 @@ Public Function GetLojas() As Collection
     m_LastError = ""
     m_LastStatusCode = 0
     
-    ' Executa requisiÁ„o
+    ' Executa requisi√ß√£o
     Set oHttp = CreateObject("MSXML2.ServerXMLHTTP")
     oHttp.Open "GET", Me.BaseUrl & "lojas", False
     ConfigureJsonHeaders oHttp, True
@@ -166,7 +166,7 @@ ErrorHandler:
 End Function
 
 '*******************************************************************************
-' MÈtodos P√∫blicos - Impressoras
+' M√©todos P√∫blicos - Impressoras
 '*******************************************************************************
 
 Public Function CadastrarImpressora(ByVal identificador As String, _
@@ -178,9 +178,9 @@ Public Function CadastrarImpressora(ByVal identificador As String, _
     Dim jsonBody As String
     Dim response As Object
     
-    ' ValidaÁ„o
+    ' Valida√ß√£o
     If Not IsAuthenticated() Then
-        CadastrarImpressora = "Erro: Usu·rio n„o autenticado"
+        CadastrarImpressora = "Erro: Usu√©rio n√©o autenticado"
         Exit Function
     End If
     
@@ -188,11 +188,11 @@ Public Function CadastrarImpressora(ByVal identificador As String, _
     m_LastError = ""
     m_LastStatusCode = 0
     
-    ' Prepara requisiÁ„o
+    ' Prepara requisi√ß√£o
     Set oHttp = CreateObject("MSXML2.ServerXMLHTTP")
     jsonBody = BuildJsonImpressora(identificador, lojaId, modeloId)
     
-    ' Executa requisiÁ„o
+    ' Executa requisi√ß√£o
     oHttp.Open "POST", Me.BaseUrl & "impressoras", False
     ConfigureJsonHeaders oHttp, True
     oHttp.send jsonBody
@@ -205,7 +205,7 @@ Public Function CadastrarImpressora(ByVal identificador As String, _
         Case 200, 201
             CadastrarImpressora = "Sucesso: " & response.Item("message")
         Case 409
-            CadastrarImpressora = "Erro: Impressora j· existe"
+            CadastrarImpressora = "Erro: Impressora j√© existe"
         Case 500
             CadastrarImpressora = "Erro: " & response.Item("message")
         Case Else
@@ -230,14 +230,14 @@ Public Function CadastrarImpressoraPorLoja(ByVal codigoLoja As String, _
     Dim response As Object
     Dim endpoint As String
     
-    ' ValidaÁ„o
+    ' Valida√ß√£o
     If Not IsAuthenticated() Then
-        CadastrarImpressoraPorLoja = "Erro: Usu·rio n„o autenticado"
+        CadastrarImpressoraPorLoja = "Erro: Usu√©rio n√©o autenticado"
         Exit Function
     End If
     
     If Len(codigoLoja) = 0 Then
-        CadastrarImpressoraPorLoja = "Erro: CÛdigo da loja È obrigatÛrio"
+        CadastrarImpressoraPorLoja = "Erro: C√©digo da loja √© obrigat√©rio"
         Exit Function
     End If
     
@@ -245,12 +245,12 @@ Public Function CadastrarImpressoraPorLoja(ByVal codigoLoja As String, _
     m_LastError = ""
     m_LastStatusCode = 0
     
-    ' Prepara requisiÁ„o
+    ' Prepara requisi√ß√£o
     Set oHttp = CreateObject("MSXML2.ServerXMLHTTP")
     jsonBody = BuildJsonImpressoraPorLoja(identificador, modeloId)
     endpoint = "lojas/" & codigoLoja & "/impressoras"
     
-    ' Executa requisiÁ„o
+    ' Executa requisi√ß√£o
     oHttp.Open "POST", Me.BaseUrl & endpoint, False
     ConfigureJsonHeaders oHttp, True
     oHttp.send jsonBody
@@ -263,11 +263,11 @@ Public Function CadastrarImpressoraPorLoja(ByVal codigoLoja As String, _
         Case 200, 201
             CadastrarImpressoraPorLoja = "Sucesso: " & response.Item("message")
         Case 404
-            CadastrarImpressoraPorLoja = "Erro: Loja n„o encontrada"
+            CadastrarImpressoraPorLoja = "Erro: Loja n√©o encontrada"
         Case 409
-            CadastrarImpressoraPorLoja = "Erro: Impressora j· existe nesta loja"
+            CadastrarImpressoraPorLoja = "Erro: Impressora j√© existe nesta loja"
         Case 422
-            CadastrarImpressoraPorLoja = "Erro: Dados inv·lidos - " & response.Item("message")
+            CadastrarImpressoraPorLoja = "Erro: Dados inv√©lidos - " & response.Item("message")
         Case 500
             CadastrarImpressoraPorLoja = "Erro: " & response.Item("message")
         Case Else
@@ -291,9 +291,9 @@ Public Function AtualizarContador(ByVal identificador As String, _
     Dim jsonBody As String
     Dim response As Object
     
-    ' ValidaÁ„o
+    ' Valida√ß√£o
     If Not IsAuthenticated() Then
-        m_LastError = "Usu·rio n„o autenticado"
+        m_LastError = "Usu√©rio n√©o autenticado"
         AtualizarContador = False
         Exit Function
     End If
@@ -303,11 +303,11 @@ Public Function AtualizarContador(ByVal identificador As String, _
     m_LastStatusCode = 0
     mediaConsumo = ""
     
-    ' Prepara requisiÁ„o
+    ' Prepara requisi√ß√£o
     Set oHttp = CreateObject("MSXML2.ServerXMLHTTP")
     jsonBody = BuildJsonContador(identificador, contador)
     
-    ' Executa requisiÁ„o
+    ' Executa requisi√ß√£o
     oHttp.Open "POST", Me.BaseUrl & "impressoras/contador", False
     ConfigureJsonHeaders oHttp, True
     oHttp.send jsonBody
@@ -323,8 +323,8 @@ Public Function AtualizarContador(ByVal identificador As String, _
             AtualizarContador = True
             
         Case 404
-            ' Impressora n„o existe - poderia cadastrar automaticamente
-            m_LastError = "Impressora n„o encontrada"
+            ' Impressora n√©o existe - poderia cadastrar automaticamente
+            m_LastError = "Impressora n√©o encontrada"
             AtualizarContador = False
             
         Case 500
@@ -346,7 +346,7 @@ ErrorHandler:
 End Function
 
 '*******************************************************************************
-' MÈtodos Privados - Helpers
+' M√©todos Privados - Helpers
 '*******************************************************************************
 
 Private Function IsAuthenticated() As Boolean
@@ -387,7 +387,7 @@ Private Function BuildJsonContador(ByVal identificador As String, _
 End Function
 
 '*******************************************************************************
-' InicializaÁ„o e Limpeza
+' Inicializa√ß√£o e Limpeza
 '*******************************************************************************
 
 Private Sub Class_Initialize()
